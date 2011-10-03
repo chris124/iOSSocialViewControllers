@@ -1,15 +1,12 @@
 # iOSSocialViewControllers
-=======
 
 iOSSocialViewControllers are a collection of classes that provide pre-built UI's for using iOSSocial to interact with social networking sites.
 
 ## Community
-=========
 
 Hopefully coming soon!
 
 ## Adding iOSSocialViewControllers to your project
-==============================
 
 iOSSocialViewControllers are stand alone, drop-in classes that require prior integration with iOSSocial to work. Just drag the classes into your project and you are ready-to-roll.
 
