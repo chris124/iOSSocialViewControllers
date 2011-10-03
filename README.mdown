@@ -1,0 +1,48 @@
+# iOSSocialViewControllers
+=======
+
+iOSSocialViewControllers are a collection of classes that provide pre-built UI's for using iOSSocial to interact with social networking sites.
+
+## Community
+=========
+
+Hopefully coming soon!
+
+## Adding iOSSocialViewControllers to your project
+==============================
+
+iOSSocialViewControllers are stand alone, drop-in classes that require prior integration with iOSSocial to work. Just drag the classes into your project and you are ready-to-roll.
+
+To integrate with iOSSocial, view the readme for it here: https://github.com/chris124/iOSSocial
+    
+### iOSSServicesViewController
+------------
+
+Use iOSSServicesViewController to present a list of supported services to the user. The controller is evolving, but for now, it shows a list of available services to connect to (based on the services you choose to configure. Read below on iOSSocialServiceProtocol.):
+
+[![](http://dl.dropbox.com/u/5390704/Screenshot_6.png)](http://dl.dropbox.com/u/5390704/Screenshot_6.png)
+
+When a service is chosen, the OAuth page for the service is shown:
+
+[![](http://dl.dropbox.com/u/5390704/Screenshot_7.png)](http://dl.dropbox.com/u/5390704/Screenshot_7.png)
+
+If the user authenticates for the service, their user account is shown as connected under the accounts section:
+
+[![](http://dl.dropbox.com/u/5390704/Screenshot_8.png)](http://dl.dropbox.com/u/5390704/Screenshot_8.png)
+
+Selecting an already connected account logs the user out of that account (ie, clears out their locally stored OAuth access token for their account on the given service). Selected a disconnected account will let the user log back in:
+
+[![](http://dl.dropbox.com/u/5390704/Screenshot_9.png)](http://dl.dropbox.com/u/5390704/Screenshot_9.png)
+
+Here is the code in action:
+
+>
+iOSSServicesViewController *iossServicesViewController = [[iOSSServicesViewController alloc] init];
+>
+[iossServicesViewController presentModallyFromViewController:self 
+	                             withServiceConnectedHandler:^(id<iOSSocialLocalUserProtocol> localUser) {
+	                             }  
+	                                   withCompletionHandler:^{
+	                                       [self dismissModalViewControllerAnimated:YES];
+	                                   }
+];
