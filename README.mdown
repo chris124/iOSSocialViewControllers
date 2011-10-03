@@ -34,7 +34,21 @@ Selecting an already connected account logs the user out of that account (ie, cl
 Here is the code in action:
 
 >
-iOSSServicesViewController *iossServicesViewController = [[iOSSServicesViewController alloc] init];
+iOSSServicesViewController *iossServicesViewController = [[iOSSServicesViewController alloc] initWithServicesFilter:nil];
+>
+[iossServicesViewController presentModallyFromViewController:self 
+	                             withServiceConnectedHandler:^(id<iOSSocialLocalUserProtocol> localUser) {
+	                             }  
+	                                   withCompletionHandler:^{
+	                                       [self dismissModalViewControllerAnimated:YES];
+	                                   }
+];
+
+If you want to filter which services are displayed in the view controller, pass in an array of service names. 
+
+>
+NSArray *filter = [NSArray arrayWithObjects:@"Twitter", nil];
+iOSSServicesViewController *iossServicesViewController = [[iOSSServicesViewController alloc] initWithServicesFilter:filter];
 >
 [iossServicesViewController presentModallyFromViewController:self 
 	                             withServiceConnectedHandler:^(id<iOSSocialLocalUserProtocol> localUser) {
