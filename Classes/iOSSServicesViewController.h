@@ -12,6 +12,7 @@
 
 typedef void(^ServicesViewControllerHandler)();
 typedef void(^ServiceConnectedHandler)(id<iOSSocialLocalUserProtocol> localUser);
+typedef void(^AccountHandler)(id<iOSSocialLocalUserProtocol> localUser);
 
 @interface iOSSServicesViewController : UIViewController <UITableViewDelegate> {
 }
@@ -21,6 +22,7 @@ typedef void(^ServiceConnectedHandler)(id<iOSSocialLocalUserProtocol> localUser)
 - (void)refreshUI;
 
 - (void)presentModallyFromViewController:(UIViewController*)vc 
+                      withAccountHandler:(AccountHandler)serviceConnectedHandler 
              withServiceConnectedHandler:(ServiceConnectedHandler)serviceConnectedHandler 
                    withCompletionHandler:(ServicesViewControllerHandler)completionHandler;
 

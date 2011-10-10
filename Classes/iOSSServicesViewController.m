@@ -18,6 +18,7 @@
 @property(nonatomic, retain)    UITableView *tableView;
 @property(nonatomic, copy)      ServicesViewControllerHandler servicesViewControllerHandler;
 @property(nonatomic, copy)      ServiceConnectedHandler serviceConnectedHandler;
+@property(nonatomic, copy)      AccountHandler accountHandler;
 @property(nonatomic, retain)    NSMutableArray *services;
 @property(nonatomic, retain)    iOSServicesDataSource *servicesDataSource;
 
@@ -28,6 +29,7 @@
 @synthesize tableView = _tableView;
 @synthesize servicesViewControllerHandler;
 @synthesize serviceConnectedHandler;
+@synthesize accountHandler;
 @synthesize services;
 @synthesize servicesDataSource;
 
@@ -148,17 +150,9 @@
             case 0:
         {
             id<iOSSocialLocalUserProtocol> localUser = [[iOSSocialServicesStore sharedServiceStore].accounts objectAtIndex:[indexPath row]];
-
-            if ([localUser isAuthenticated]) {
-                [localUser logout];
-                [self refreshUI];
-            } else {
-                [localUser authenticateFromViewController:self 
-                                    withCompletionHandler:^(NSError *error){
-                                        if (!error) {
-                                            [self refreshUI];
-                                        }
-                                    }];
+            
+            if (self.accountHandler) {
+                self.accountHandler(localUser);
             }
         }
             break;
@@ -188,6 +182,8 @@
             if (self.servicesViewControllerHandler) {
                 self.servicesViewControllerHandler();
                 self.servicesViewControllerHandler = nil; 
+                self.serviceConnectedHandler = nil;
+                self.accountHandler = nil;
             }
         }
             break;
@@ -212,9 +208,11 @@
 }
 
 - (void)presentModallyFromViewController:(UIViewController*)vc 
+                      withAccountHandler:(AccountHandler)theAccountHandler 
              withServiceConnectedHandler:(ServiceConnectedHandler)newServiceConnectionHandler 
                    withCompletionHandler:(ServicesViewControllerHandler)completionHandler
 {
+    self.accountHandler = theAccountHandler;
     self.serviceConnectedHandler = newServiceConnectionHandler;
     self.servicesViewControllerHandler = completionHandler;
     
