@@ -172,7 +172,6 @@
                                         if (self.serviceConnectedHandler) {
                                             self.serviceConnectedHandler(localUser);
                                         }
-                                        [self refreshUI];
                                     }
                                 }];
         }
