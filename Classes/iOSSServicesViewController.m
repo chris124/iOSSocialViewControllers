@@ -172,6 +172,8 @@
                                         if (self.serviceConnectedHandler) {
                                             self.serviceConnectedHandler(localUser);
                                         }
+                                    } else {
+                                        NSLog(@"error: do something. tell the user.");
                                     }
                                 }];
         }
