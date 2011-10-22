@@ -21,6 +21,7 @@
 @property(nonatomic, copy)      AccountHandler accountHandler;
 @property(nonatomic, retain)    NSMutableArray *services;
 @property(nonatomic, retain)    iOSServicesDataSource *servicesDataSource;
+@property(nonatomic, retain)    UIActivityIndicatorView *activityView;
 
 @end
 
@@ -32,6 +33,7 @@
 @synthesize accountHandler;
 @synthesize services;
 @synthesize servicesDataSource;
+@synthesize activityView;
 
 - (id)init
 {
@@ -46,6 +48,11 @@
         self.tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
         self.tableView.delegate = self;
         self.tableView.dataSource = self.servicesDataSource;
+        
+        self.activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        activityView.frame = CGRectMake(0.0, 0.0, 20.0, 20.0);
+        activityView.center = CGPointMake(self.view.frame.size.width/2.0, self.view.frame.size.height/2.0);
+        [self.view addSubview: activityView];
     }
     return self;
 }
@@ -74,6 +81,11 @@
         self.tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
         self.tableView.delegate = self;
         self.tableView.dataSource = self.servicesDataSource;
+        
+        self.activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        activityView.frame = CGRectMake(0.0, 0.0, 20.0, 20.0);
+        activityView.center = CGPointMake(self.view.frame.size.width/2.0, self.view.frame.size.height/2.0);
+        [self.view addSubview: activityView];
     }
     return self;
 }
@@ -165,15 +177,19 @@
             
             id<iOSSocialLocalUserProtocol> localUser = [service localUser];
             
+            [self.activityView startAnimating];
             [localUser authenticateFromViewController:self 
                                 withCompletionHandler:^(NSError *error){
+                                    [self.activityView stopAnimating];
                                     if (!error) {
                                         //let the handler handle it and decice what they want to do this this local user
                                         if (self.serviceConnectedHandler) {
                                             self.serviceConnectedHandler(localUser);
                                         }
                                     } else {
-                                        NSLog(@"error: do something. tell the user.");
+                                        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:@"An error was encountered while attempting to retrieve you account information. Please try again." delegate:self cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
+                                        alertView.alertViewStyle = UIAlertViewStyleDefault;
+                                        [alertView show];
                                     }
                                 }];
         }
